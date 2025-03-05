@@ -2,51 +2,56 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-const ContactCard = (props) => {
-  const { actions } = useContext(Context);
-  let item = props.item;
-  let index = props.index;
+const ContactCard = ({ item }) => {
+    const { actions } = useContext(Context);
 
-  return (
-    <>
-      <div className="col-auto">
-        <img
-          src="https://img.freepik.com/fotos-premium/mejores-gafas-hombre-mejores-lentes_759095-27098.jpg"
-          className="rounded-circle"
-          alt="Descrizione immagine"
-          width="300"
-        />
-      </div>
-      <div className="userInfo col">
-        <div className="fs-1">{item.name}</div>
-        <div className="fs-3 text-secondary d-flex">
-          <i className="fa-solid fa-location-dot"></i> {item.address}
+    return (
+        <div className="d-flex align-items-center p-3 border rounded">
+            {/* Imagen del contacto */}
+            <div className="col-auto">
+                <img
+                    src="https://img.freepik.com/fotos-premium/mejores-gafas-hombre-mejores-lentes_759095-27098.jpg"
+                    className="rounded-circle"
+                    alt="User"
+                    width="100"
+                />
+            </div>
+
+            {/* Información del usuario */}
+            <div className="userInfo col ms-3">
+                <h4>{item.name || "No name"}</h4>
+                <p className="text-secondary">
+                    <i className="fa-solid fa-location-dot"></i> {item.address || "No address"}
+                </p>
+                <p className="text-secondary">
+                    <i className="fa-solid fa-phone"></i> {item.phone || "No phone"}
+                </p>
+                <p className="text-secondary">
+                    <i className="fa-solid fa-envelope"></i> {item.email || "No email"}
+                </p>
+            </div>
+
+            {/* Botones de acción */}
+            <div className="col-auto">
+                {/* ✅ Botón corregido para editar */}
+                <Link to={`/edit/${item.id}`}>
+                    <button className="btn btn-warning me-2" onClick={() => actions.modifyContact(item.id)}>
+                        <i className="fa-solid fa-pencil"></i>
+                    </button>
+                </Link>
+
+                {/* Botón de eliminar con confirmación */}
+                <button className="btn btn-danger" onClick={() => {
+                    if (window.confirm("¿Estás seguro de que quieres eliminar este contacto?")) {
+                        actions.deleteItem(item.id);
+                    }
+                }}>
+                    <i className="fa-solid fa-trash"></i>
+                </button>
+            </div>
         </div>
-        <div className="fs-3 text-secondary d-flex">
-          <i className="fa-solid fa-phone"></i> {item.phone}
-        </div>
-        <div className="fs-3 text-secondary d-flex">
-          <i className="fa-solid fa-envelope"></i> {item.email}
-        </div>
-      </div>
-      <div className="mt-4 col-auto">
-        <Link to="/demo">
-          <span
-            className="pencil"
-            onClick={() => actions.modifyContact(item.id, index)}
-          >
-            <i className="fa-solid fa-pencil"></i>
-          </span>
-        </Link>
-        <span className="trush">
-          <i
-            className="fa-solid fa-trash"
-            onClick={() => actions.deleteItem(item.id)}
-          ></i>
-        </span>
-      </div>
-    </>
-  );
+    );
 };
 
 export default ContactCard;
+

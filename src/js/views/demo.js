@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-
+import React, { useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 
 import "../../styles/demo.css";
@@ -9,27 +7,26 @@ import ContactCard from "../component/ContactCard";
 export const Demo = () => {
 	const { store, actions } = useContext(Context);
 
+	useEffect(() => {
+		actions.loadContacts(); // Asegura que los contactos se carguen cuando la vista se monta
+	}, []);
 
 	return (
 		<div className="container-fluid">
-			<div className="addContactButton mb-3 d-flex justify-content-end">
-				<Link to="/demo">
-					<button className="btn btn-success">Add new contact</button>
-				</Link>
-			</div>
 			<ul className="list-group m-4">
-				{store.demo.map((item, index) => {                //loop sull'array store.demo e genera un elemento <li> per ogni elemento dell'array
-					return (
+				{store.demo.length === 0 ? (
+					<p className="text-center">No contacts found. Add a new one!</p>
+				) : (
+					store.demo.map((item, index) => (
 						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between" 
+							key={item.id} // Ahora usamos item.id en lugar de index
+							className="list-group-item d-flex justify-content-between"
 							style={{ background: "white" }}>
 							
-							<ContactCard item={item}/>
-
+							<ContactCard item={item} index={index} />
 						</li>
-					);
-				})}
+					))
+				)}
 			</ul>
 		</div>
 	);
