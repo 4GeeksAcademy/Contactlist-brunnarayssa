@@ -8,6 +8,7 @@ export const Home = () => {
     const [loading, setLoading] = useState(false); // Nuevo estado para manejar el botón de carga
 
     useEffect(() => {
+        
         actions.loadContacts(); // Asegura que los contactos se carguen cuando la vista se monta
     }, []);
 
@@ -19,7 +20,7 @@ export const Home = () => {
         console.log("Formulario enviado:", store.inputs);
 
         // Verificar si el contacto ya existe antes de agregarlo
-        const contactExists = store.demo.some(
+        /* const contactExists = store.demo.some(
             (contact) => contact.email === store.inputs.email || contact.phone === store.inputs.phone
         );
 
@@ -27,12 +28,10 @@ export const Home = () => {
             alert("Este contacto ya existe.");
             setLoading(false);
             return;
-        }
+        } */
 
-        actions.sendForm(store.inputs).then(() => {
-            actions.setInputs({ name: "", phone: "", email: "", address: "" });
-            setLoading(false); // Reactiva el botón después de enviar
-        });
+        actions.sendForm(store.inputs) 
+        setLoading(false)
     };
 
     const handleChange = (e) => {

@@ -24,10 +24,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                   method: store.selectedId ? "PUT" : "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
-                      name: store.inputs.name.trim(),
-                      phone: store.inputs.phone.trim(),
-                      email: store.inputs.email.trim(),
-                      address: store.inputs.address.trim(),
+                      name: store.inputs.name,
+                      phone: store.inputs.phone,
+                      email: store.inputs.email,
+                      address: store.inputs.address,
                   }),
               };
 
@@ -35,17 +35,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                   ? `https://playground.4geeks.com/contact/agendas/brunnarayssa/${store.selectedId}`
                   : `https://playground.4geeks.com/contact/agendas/brunnarayssa`;
 
-              fetch(url, requestOption)
+              fetch("https://playground.4geeks.com/contact/agendas/brunnarayssa/contacts" , requestOption)
                   .then((response) => {
                       if (!response.ok) throw new Error("Error en la solicitud");
                       return response.json();
                   })
                   .then(() => {
-                      console.log("Contacto guardado correctamente");
-                      setStore({
-                          inputs: { name: "", phone: "", email: "", address: "" },
-                          selectedId: null,
-                      });
+                      
                       getActions().loadContacts();
                   })
                   .catch((error) => console.error("Error al guardar contacto:", error));
